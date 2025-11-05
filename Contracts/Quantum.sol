@@ -1,115 +1,49 @@
-Struct to store quantum data entries
-    struct QuantumData {
-        bytes32 dataHash;
-        uint256 timestamp;
-        address owner;
-        bool isVerified;
-        string metadata;
-    }
-    
-    Mapping to track user's data entries
-    mapping(address => uint256[]) public userRecords;
-    
-    Events
-    event DataStored(uint256 indexed recordId, address indexed owner, bytes32 dataHash, uint256 timestamp);
-    event DataVerified(uint256 indexed recordId, address indexed verifier, uint256 timestamp);
-    event DataUpdated(uint256 indexed recordId, string newMetadata, uint256 timestamp);
-    
-    /**
-     * @dev Store quantum-secured data on the blockchain
-     * @param _dataHash The hash of the data to be stored
-     * @param _metadata Additional metadata about the data
-     * @return recordId The ID of the newly created record
-     */
-    function storeQuantumData(bytes32 _dataHash, string memory _metadata) public returns (uint256) {
-        require(_dataHash != bytes32(0), "Invalid data hash");
-        
-        recordCount++;
-        uint256 newRecordId = recordCount;
-        
-        quantumRecords[newRecordId] = QuantumData({
-            dataHash: _dataHash,
-            timestamp: block.timestamp,
-            owner: msg.sender,
-            isVerified: false,
-            metadata: _metadata
-        });
-        
-        userRecords[msg.sender].push(newRecordId);
-        
-        emit DataStored(newRecordId, msg.sender, _dataHash, block.timestamp);
-        
-        return newRecordId;
-    }
-    
-    /**
-     * @dev Verify quantum data integrity
-     * @param _recordId The ID of the record to verify
-     * @param _dataHash The hash to verify against stored data
-     * @return bool True if verification succeeds
-     */
-    function verifyQuantumData(uint256 _recordId, bytes32 _dataHash) public returns (bool) {
-        require(_recordId > 0 && _recordId <= recordCount, "Invalid record ID");
-        require(quantumRecords[_recordId].dataHash == _dataHash, "Data verification failed");
-        
-        quantumRecords[_recordId].isVerified = true;
-        
-        emit DataVerified(_recordId, msg.sender, block.timestamp);
-        
-        return true;
-    }
-    
-    /**
-     * @dev Update metadata for existing quantum data
-     * @param _recordId The ID of the record to update
-     * @param _newMetadata New metadata string
-     */
-    function updateMetadata(uint256 _recordId, string memory _newMetadata) public {
-        require(_recordId > 0 && _recordId <= recordCount, "Invalid record ID");
-        require(quantumRecords[_recordId].owner == msg.sender, "Only owner can update metadata");
-        
-        quantumRecords[_recordId].metadata = _newMetadata;
-        
-        emit DataUpdated(_recordId, _newMetadata, block.timestamp);
-    }
-    
-    /**
-     * @dev Get all record IDs for a specific user
-     * @param _user Address of the user
-     * @return uint256[] Array of record IDs
-     */
-    function getUserRecords(address _user) public view returns (uint256[] memory) {
-        return userRecords[_user];
-    }
-    
-    /**
-     * @dev Get complete details of a quantum record
-     * @param _recordId The ID of the record
-     * @return dataHash The stored data hash
-     * @return timestamp When the data was stored
-     * @return owner Address of the data owner
-     * @return isVerified Verification status
-     * @return metadata Additional metadata
-     */
-    function getQuantumRecord(uint256 _recordId) public view returns (
-        bytes32 dataHash,
-        uint256 timestamp,
-        address owner,
-        bool isVerified,
-        string memory metadata
-    ) {
-        require(_recordId > 0 && _recordId <= recordCount, "Invalid record ID");
-        
-        QuantumData memory record = quantumRecords[_recordId];
-        return (
-            record.dataHash,
-            record.timestamp,
-            record.owner,
-            record.isVerified,
-            record.metadata
-        );
-    }
+StructstoredataQuantumDatadataHash;
+uint256owner;
+boolmetadata;
 }
-// 
-update
-// 
+Mappingtrackdata=>publicDataStored(uint256recordId,indexedbytes32uint256DataVerified(uint256recordId,indexeduint256DataUpdated(uint256recordId,newMetadata,timestamp);
+/**
+@devquantum-securedonblockchain
+@paramTheofdatabe*_metadatametadatathe*recordIdIDthecreated*/
+function_dataHash,memorypublic(uint256)!="Invalidhash");
+recordCount++;
+uint256==_dataHash,
+timestamp:msg.sender,
+isVerified:_metadata
+});
+userRecords[msg.sender].push(newRecordId);
+emitmsg.sender,block.timestamp);
+return*Verifydata*_recordIdIDtheto*_dataHashhashverifystored*boolifsucceeds
+verifyQuantumData(uint256bytes32public(bool)>&&<="InvalidID");
+require(quantumRecords[_recordId].dataHash_dataHash,verification=DataVerified(_recordId,block.timestamp);
+return*Updateforquantum*_recordIdIDtheto*_newMetadatametadata*/
+function_recordId,memorypublic>&&<="InvalidID");
+require(quantumRecords[_recordId].ownermsg.sender,ownerupdate=DataUpdated(_recordId,block.timestamp);
+}
+/**
+@devallIDsauser
+@paramAddressthe*uint256[]ofIDs
+getUserRecords(addresspublicreturnsmemory)userRecords[_user];
+}
+/**
+@devcompleteofquantum*_recordIdIDthe*dataHashstoredhash
+@returnWhendatastored
+@returnAddresstheowner
+@returnVerification*metadatametadata
+getQuantumRecord(uint256publicreturnsdataHash,
+uint256owner,
+boolmemory{
+require(_recordId0_recordIdrecordCount,recordmemory=(
+record.dataHash,
+record.timestamp,
+record.owner,
+record.isVerified,
+record.metadata
+);
+}
+}
+//
+ 
+Updated on 2025-11-05
+ 
